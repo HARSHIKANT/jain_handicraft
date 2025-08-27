@@ -1,4 +1,5 @@
 import { Inngest } from "inngest";
+import connectDB from "./db";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "jain_handicraft_emporium" });
@@ -20,7 +21,7 @@ export const syncUserCreation = inngest.createFunction(
             name: first_name + " " + last_name,
             imageUrl: image_url
         }
-        await connectDB()
+        await connectDB();
         await User.create(userData)
     }
 
