@@ -1,8 +1,11 @@
 'use client'
 import { productsDummyData, userDummyData } from "@/assets/assets";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { get } from "mongoose";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const AppContext = createContext();
 
@@ -16,6 +19,7 @@ export const AppContextProvider = (props) => {
     const router = useRouter()
 
     const{user} = useUser()
+    const {getToken} = useAuth()
 
     const [products, setProducts] = useState([])
     const [userData, setUserData] = useState(false)
@@ -23,7 +27,18 @@ export const AppContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({})
 
     const fetchProductData = async () => {
-        setProducts(productsDummyData)
+        try {
+            
+            const { data } = await axios.get('/api/product/list')
+            if(data.success) {
+                setProducts(data.products)
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error) {
+            
+        }
     }
 
     const fetchUserData = async () => {
@@ -31,10 +46,22 @@ export const AppContextProvider = (props) => {
             if (user.publicMetadata.role === 'seller') {
                 setIsSeller(true)
             }
-            setUserData(userDummyData)
+
+            const token = await getToken()
+
+            const { data } = await axios.get('/api/user/data',{ headers: { Authorization: `Bearer ${token}`}})
+
+            if(data.success) {
+                setUserData(data.user)
+                setCartItems(data.user.cartItems)
+            } else {
+                toast.error(data.message)
+            }
+            
+
         }
         catch (error) {
-            console.log("Error fetching user data:", error)
+            toast.error(error.message)
         }
     }
 
@@ -48,7 +75,17 @@ export const AppContextProvider = (props) => {
             cartData[itemId] = 1;
         }
         setCartItems(cartData);
+    
+        if(user) {
+            try {
+                const token = await getToken()
+                await axios.post('/api/cart/update', {cartData}, { headers: { Authorization: `Bearer ${token}`}})
+                toast.success("Item added to cart")
 
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
     }
 
     const updateCartQuantity = async (itemId, quantity) => {
@@ -61,6 +98,19 @@ export const AppContextProvider = (props) => {
         }
         setCartItems(cartData)
 
+        if(user) {
+            try {
+                
+                const token = await getToken()
+
+                await axios.post('/api/cart/update', {cartData}, { headers: { Authorization: `Bearer ${token}`}})
+
+                toast.success("Cart updated")
+
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
     }
 
     const getCartCount = () => {
@@ -96,7 +146,7 @@ export const AppContextProvider = (props) => {
     }, [user])
 
     const value = {
-        user, 
+        user, getToken,
         currency, router,
         isSeller, setIsSeller,
         userData, fetchUserData,
