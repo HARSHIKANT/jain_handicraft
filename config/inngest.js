@@ -4,13 +4,14 @@ import User from "../models/User.js";
 import Order from "@/models/Order";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "jain_handicraft_emporium" });
+export const inngest = new Inngest({ id: "jain_handicraft_emporium", 
+    apiKey: process.env.INNGEST_EVENT_KEY });
 
 // Inngest function to save user data to a database
 
 export const syncUserCreation = inngest.createFunction(
     {
-        id: "sync/user-from-clerk"
+        id: "sync/user-from-clerk",
     },
     {
         event: "clerk/user.created",

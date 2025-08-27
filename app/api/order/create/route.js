@@ -14,12 +14,15 @@ export async function POST(request) {
         if(!address || items.length === 0){
             return NextResponse.json({ success: false, message: "Invalid data" })
         }
+        await connectDB()
 
         // calculate total price
-        const amount = await items.reduce(async (acc, item) => {
-            const product = await Product.findById(item.product);
-            return acc + product.offerPrice * item.quantity;
-        }, 0);
+        let amount = 0;
+for (const item of items) {
+  const product = await Product.findById(item.product);
+  if (!product) throw new Error(`Product not found: ${item.product}`);
+  amount += product.offerPrice * item.quantity;
+}
 
         await inngest.send({
             name: 'order/created',
