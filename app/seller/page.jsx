@@ -13,7 +13,7 @@ const AddProduct = () => {
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Earphone');
+  const [category, setCategory] = useState('Brass Idols & Statues');
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
 
@@ -40,7 +40,7 @@ const AddProduct = () => {
         setFiles([])
         setName('')
         setDescription('')
-        setCategory('Earphone')
+        setCategory('Brass Idols & Statues')
         setPrice('')
         setOfferPrice('')
       } else{
@@ -123,13 +123,13 @@ const AddProduct = () => {
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
             >
-              <option value="Earphone">Earphone</option>
-              <option value="Headphone">Headphone</option>
-              <option value="Watch">Watch</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Camera">Camera</option>
-              <option value="Accessories">Accessories</option>
+              <option value="Brass Idols & Statues">Brass Idols & Statues</option>
+              <option value="Pooja Thalis & Sets">Pooja Thalis & Sets</option>
+              <option value="Diyas, Lamps & Aarti Stands">Diyas, Lamps & Aarti Stands</option>
+              <option value="Decorative Showpieces">Decorative Showpieces</option>
+              <option value="Plates, Bowls & Glasses">Plates, Bowls & Glasses</option>
+              <option value="Brass Bells">Brass Bells</option>
+              <option value="Incense Holders">Incense Holders</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 w-32">

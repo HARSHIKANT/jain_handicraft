@@ -144,7 +144,7 @@ export const productsDummyData = [
       "https://raw.githubusercontent.com/avinashdm/gs-images/main/quickcart/imwuugqxsajuwqpkegb5.webp",
       "https://raw.githubusercontent.com/avinashdm/gs-images/main/quickcart/k1oqaslw5tb3ebw01vvj.webp"
     ],
-    "category": "Earphone",
+    "category": "Brass Idols & Statues",
     "date": 1738667236865,
     "__v": 0
   },
