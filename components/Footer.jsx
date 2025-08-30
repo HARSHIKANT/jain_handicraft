@@ -9,10 +9,8 @@ const Footer = () => {
         <div className="w-4/5">
           <Image className="w-28 md:w-32" src={assets.logo} alt="logo" />
           <p className="mt-6 text-sm">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+          Established in the year <strong>1970</strong>, we <strong>"Jain Handicraft Emporium"</strong> are the leading Manufacturer of a wide range of Decorative diya, Brass Bowl Spoong Tray Set, etc.
+          We are a leading Manufacturer of Brass 4 Bowls 4 Spoon Tray Set, Golden Brass Bowl Spoon Tray Set, Silver Plated Bowl Spoon Tray Set, Lotus Brass Bowl Spoon Set and Golden Silver Bowl Spoon Tray Brass Set from Moradabad, India.
           </p>
         </div>
 
@@ -40,8 +38,9 @@ const Footer = () => {
           <div>
             <h2 className="font-medium text-gray-900 mb-5">Get in touch</h2>
             <div className="text-sm space-y-2">
-              <p>+1-234-567-890</p>
+              <p><span style={{color: "black",fontWeight: "bold", fontSize: "22px"}}>✆</span> 8043855635</p>
               <p>contact @ Jain Handicraft Emporium</p>
+              <p><span style={{color: "black",fontWeight: "bold", fontSize: "22px"}}>📍</span> Shri Ram Vihar Colony, Court Compound, Civil Lines, Moradabad-244001, Uttar Pradesh, India</p>
             </div>
           </div>
         </div>

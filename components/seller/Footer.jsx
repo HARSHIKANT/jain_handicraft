@@ -19,7 +19,7 @@ const Footer = () => {
         <a href="#">
           <Image src={assets.twitter_icon} alt="twitter_icon" />
         </a>
-        <a href="#">
+        <a href="https://www.instagram.com/jain_handicraft_emporium/">
           <Image src={assets.instagram_icon} alt="instagram_icon" />
         </a>
       </div>
