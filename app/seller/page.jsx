@@ -19,7 +19,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const toastId = toast.loading("Loading the file, please wait...");
     const formData = new FormData();
     formData.append('name', name)
     formData.append('description', description)
@@ -35,8 +35,9 @@ const AddProduct = () => {
       
       const token = await getToken()
       const { data } = await axios.post('/api/product/add', formData, {headers: {Authorization: `Bearer ${token}`}})
+      
       if(data.success) {
-        toast.success(data.message)
+        toast.success(data.message, {id: toastId})
         setFiles([])
         setName('')
         setDescription('')
@@ -161,7 +162,7 @@ const AddProduct = () => {
             />
           </div>
         </div>
-        <button type="submit" className="px-8 py-2.5 bg-orange-600 text-white font-medium rounded">
+        <button type="submit" className="px-8 py-2.5 bg-orange-600 text-white font-medium rounded shadow-md active:translate-y-0.5 active:shadow-inner transition-all duration-150">
           ADD
         </button>
       </form>
