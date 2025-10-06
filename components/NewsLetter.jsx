@@ -6,16 +6,18 @@ const NewsLetter = () => {
       <h1 className="md:text-4xl text-2xl font-medium">
         Subscribe now
       </h1>
-      <p className="md:text-base text-gray-500/80 pb-8">
+      <p className="md:text-base text-black/80 pb-8">
       From traditional brass to modern essentials—find the perfect blend of utility and style.
       </p>
       <div className="flex items-center justify-between max-w-2xl w-full md:h-14 h-12">
         <input
-          className="border border-gray-500/30 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-500"
+          className="border border-gray-500/30 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-black"
           type="text"
           placeholder="Enter your email id"
         />
-        <button className="md:px-12 px-8 h-full text-white bg-orange-600 rounded-md rounded-l-none">
+        <button className="md:px-12 px-8 h-full text-white bg-orange-600 rounded-md rounded-l-none"
+         
+        >
           Subscribe
         </button>
       </div>

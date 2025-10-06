@@ -13,7 +13,7 @@ const Cart = () => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col md:flex-row gap-10 px-6 md:px-16 lg:px-32 pt-14 mb-20">
+      <div className="flex flex-col md:flex-row gap-10 px-6 md:px-16 lg:px-32 pt-14 mb-20 bg-orange-50">
         <div className="flex-1">
           <div className="flex items-center justify-between mb-8 border-b border-gray-500/30 pb-6">
             <p className="text-2xl md:text-3xl text-gray-500">
@@ -78,20 +78,12 @@ const Cart = () => {
                       <td className="py-4 md:px-4 px-1 text-gray-600">₹{product.offerPrice}</td>
                       <td className="py-4 md:px-4 px-1">
                         <div className="flex items-center md:gap-2 gap-1">
-                          <button onClick={() => updateCartQuantity(product._id, cartItems[itemId] - 1)}>
-                            <Image
-                              src={assets.decrease_arrow}
-                              alt="decrease_arrow"
-                              className="w-4 h-4"
-                            />
+                          <button className="bg-white px-2" onClick={() => updateCartQuantity(product._id, cartItems[itemId] - 1)}>
+                            -
                           </button>
                           <input onChange={e => updateCartQuantity(product._id, Number(e.target.value))} type="number" value={cartItems[itemId]} className="w-8 border text-center appearance-none"></input>
-                          <button onClick={() => addToCart(product._id)}>
-                            <Image
-                              src={assets.increase_arrow}
-                              alt="increase_arrow"
-                              className="w-4 h-4"
-                            />
+                          <button className="bg-white px-2" onClick={() => addToCart(product._id)}>
+                            +
                           </button>
                         </div>
                       </td>
