@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
 
 const HeaderSlider = () => {
+  const { products, router } = useAppContext()
   const sliderData = [
     {
       id: 1,
