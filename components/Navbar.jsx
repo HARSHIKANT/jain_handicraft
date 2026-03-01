@@ -38,7 +38,7 @@ const Navbar = () => {
       </div>
 
       <ul className="hidden md:flex items-center gap-4 ">
-        <Image className="w-4 h-4 invert brightness-0" src={assets.search_icon} alt="search icon" />
+        <button><Image className="w-4 h-4 invert brightness-0" src={assets.search_icon} alt="search icon" /></button>
         {user ? 
           <>
           <UserButton>
