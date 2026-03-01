@@ -85,11 +85,16 @@ const Product = () => {
                         {productData.description}
                     </p>
                     <p className="text-3xl font-medium mt-6">
-                            ₹{productData.offerPrice}
+                        ₹{productData.offerPrice}
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
                             ₹{productData.price}
                         </span>
                     </p>
+                    {productData.outOfStock && (
+                        <span className="inline-block mt-3 px-4 py-1.5 bg-red-100 text-red-600 text-sm font-medium rounded-full">
+                            Out of Stock
+                        </span>
+                    )}
                     <hr className="bg-gray-600 my-6" />
                     <div className="overflow-x-auto">
                         <table className="table-auto border-collapse w-full max-w-72">
@@ -113,12 +118,25 @@ const Product = () => {
                     </div>
 
                     <div className="flex items-center mt-10 gap-4">
-                        <button onClick={() => addToCart(productData._id)} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
-                            Add to Cart
-                        </button>
-                        <button onClick={() => { addToCart(productData._id); router.push('/cart') }} className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition">
-                            Buy now
-                        </button>
+                        {productData.outOfStock ? (
+                            <>
+                                <button disabled className="w-full py-3.5 bg-gray-200 text-gray-400 cursor-not-allowed">
+                                    Add to Cart
+                                </button>
+                                <button disabled className="w-full py-3.5 bg-gray-300 text-gray-400 cursor-not-allowed">
+                                    Buy now
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <button onClick={() => addToCart(productData._id)} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
+                                    Add to Cart
+                                </button>
+                                <button onClick={() => { addToCart(productData._id); router.push('/cart') }} className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition">
+                                    Buy now
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

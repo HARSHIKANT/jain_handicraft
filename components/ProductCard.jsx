@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
                 <Image
                     src={product.image[0]}
                     alt={product.name}
-                    className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
+                    className={`group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full ${product.outOfStock ? 'opacity-50' : ''}`}
                     width={800}
                     height={800}
                 />
@@ -27,6 +27,11 @@ const ProductCard = ({ product }) => {
                         alt="heart_icon"
                     />
                 </button>
+                {product.outOfStock && (
+                    <span className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full">
+                        Out of Stock
+                    </span>
+                )}
             </div>
 
             <p className="md:text-base font-medium pt-2 w-full truncate">{product.name}</p>
@@ -51,9 +56,15 @@ const ProductCard = ({ product }) => {
 
             <div className="flex items-end justify-between w-full mt-1">
                 <p className="text-base font-medium">{currency}{product.offerPrice}</p>
-                <button className=" max-sm:hidden px-4 py-1.5 text-black border border-black/20 rounded-full text-xs hover:bg-slate-50 transition">
-                    Buy now
-                </button>
+                {product.outOfStock ? (
+                    <span className="max-sm:hidden px-4 py-1.5 text-red-500 border border-red-300 rounded-full text-xs">
+                        Sold Out
+                    </span>
+                ) : (
+                    <button className="max-sm:hidden px-4 py-1.5 text-black border border-black/20 rounded-full text-xs hover:bg-slate-50 transition">
+                        Buy now
+                    </button>
+                )}
             </div>
         </div>
     )
