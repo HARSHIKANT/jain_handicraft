@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
           <AppContextProvider>
             {children}
             <WhatsAppButton />
+            <Analytics />
           </AppContextProvider>
         </body>
       </html>
