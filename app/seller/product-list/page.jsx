@@ -32,6 +32,13 @@ const ProductList = () => {
   const [editNewFiles, setEditNewFiles] = useState([])
   const [updating, setUpdating] = useState(false)
 
+  // Featured modal state
+  const [showFeaturedModal, setShowFeaturedModal] = useState(false)
+  const [featuredProduct, setFeaturedProduct] = useState(null)
+  const [featuredTitle, setFeaturedTitle] = useState('')
+  const [featuredDescription, setFeaturedDescription] = useState('')
+  const [savingFeatured, setSavingFeatured] = useState(false)
+
   const fetchSellerProduct = async () => {
     try {
       const token = await getToken()
@@ -105,6 +112,48 @@ const ProductList = () => {
       }
     } catch (error) {
       toast.error(error.message)
+    }
+  }
+
+  // ── Featured handlers ──
+
+  const openFeaturedModal = (product) => {
+    setFeaturedProduct(product)
+    setFeaturedTitle(product.featuredTitle || '')
+    setFeaturedDescription(product.featuredDescription || '')
+    setShowFeaturedModal(true)
+  }
+
+  const closeFeaturedModal = () => {
+    setShowFeaturedModal(false)
+    setFeaturedProduct(null)
+    setFeaturedTitle('')
+    setFeaturedDescription('')
+  }
+
+  const handleToggleFeatured = async (markAsFeatured = true) => {
+    if (!featuredProduct) return
+    setSavingFeatured(true)
+    try {
+      const token = await getToken()
+      const body = {
+        productId: featuredProduct._id,
+        ...(markAsFeatured && { featuredTitle, featuredDescription })
+      }
+      const { data } = await axios.put('/api/product/featured', body, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (data.success) {
+        toast.success(data.message)
+        setProducts(prev => prev.map(p => p._id === featuredProduct._id ? data.product : p))
+        closeFeaturedModal()
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setSavingFeatured(false)
     }
   }
 
@@ -255,6 +304,20 @@ const ProductList = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
                           {!product.outOfStock && <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16" />}
+                        </svg>
+                      </button>
+                      {/* Featured toggle button */}
+                      <button
+                        onClick={() => openFeaturedModal(product)}
+                        className={`flex items-center gap-1 px-1.5 md:px-3 py-2 rounded-md text-xs ${product.featured
+                            ? 'bg-yellow-400 text-gray-900'
+                            : 'bg-gray-200 text-gray-700'
+                          }`}
+                        title={product.featured ? 'Edit Featured' : 'Mark as Featured'}
+                      >
+                        <span className="hidden md:block">{product.featured ? 'Featured' : 'Feature'}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill={product.featured ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
                       </button>
                     </div>
@@ -448,6 +511,73 @@ const ProductList = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Featured Product Modal ── */}
+      {showFeaturedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-xl p-6 mx-4 max-w-md w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {featuredProduct?.featured ? 'Edit Featured Product' : 'Mark as Featured'}
+              </h3>
+              <button onClick={closeFeaturedModal} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+
+            <p className="text-sm text-gray-500 mb-4">Product: <span className="font-medium text-gray-800">{featuredProduct?.name}</span></p>
+
+            <div className="space-y-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium" htmlFor="featured-title">Featured Title</label>
+                <input
+                  id="featured-title"
+                  type="text"
+                  placeholder="e.g. Devotion starts here"
+                  className="outline-none py-2 px-3 rounded border border-gray-500/40 text-sm"
+                  value={featuredTitle}
+                  onChange={(e) => setFeaturedTitle(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium" htmlFor="featured-desc">Featured Description</label>
+                <input
+                  id="featured-desc"
+                  type="text"
+                  placeholder="e.g. Experience the divine"
+                  className="outline-none py-2 px-3 rounded border border-gray-500/40 text-sm"
+                  value={featuredDescription}
+                  onChange={(e) => setFeaturedDescription(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              {featuredProduct?.featured && (
+                <button
+                  onClick={() => handleToggleFeatured(false)}
+                  disabled={savingFeatured}
+                  className="px-4 py-2 text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors text-sm font-medium disabled:opacity-50"
+                >
+                  Remove Featured
+                </button>
+              )}
+              <button
+                onClick={closeFeaturedModal}
+                disabled={savingFeatured}
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleToggleFeatured(true)}
+                disabled={savingFeatured}
+                className="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600 transition-colors text-sm font-medium disabled:opacity-50"
+              >
+                {savingFeatured ? 'Saving...' : (featuredProduct?.featured ? 'Update' : 'Save as Featured')}
+              </button>
+            </div>
           </div>
         </div>
       )}
